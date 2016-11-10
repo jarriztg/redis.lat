@@ -1,0 +1,80 @@
+http = "http://"
+localhost = "127.0.0.1"
+puerto = ":7379"
+tipo = {
+	"asignar": "/SET/",
+	"hasignar": "/HSET/",
+	"obtener": "/GET/",
+	"hobtener": "/HGET/",
+	"ping": "/PING/",
+	"borrar": "/DEL/",
+	"hborrar": "/HDEL/",
+	"incrementar": "/INCRBY/",
+	"hincrementar": "/HINCRBY/"
+	}
+
+
+def = http.localhost.puerto
+
+funcion codificar(a)
+  a = reemplazar(a, " ", "%20")
+  a = reemplazar(a, "<", "%3C")
+  a = reemplazar(a, ">", "%3E")
+  a = reemplazar(a, "#", "%23")
+  a = reemplazar(a, "{", "%7B")
+  a = reemplazar(a, "}", "%7D")
+  a = reemplazar(a, "|", "%7C")
+  a = reemplazar(a, "+", "%2B")
+  a = reemplazar(a, "\n", "%0A")
+  a = reemplazar(a, "\\n", "%0A")
+  a = reemplazar(a, "\\", "%5C")
+  a = reemplazar(a, "\^", "%5E")
+  a = reemplazar(a, "~", "%7E")
+  a = reemplazar(a, "[", "%5B")
+  a = reemplazar(a, "]", "%5D")
+  a = reemplazar(a, "`", "%60")
+  a = reemplazar(a, ";", "%3B")
+  a = reemplazar(a, "/", "%2F")
+  a = reemplazar(a, "?", "%3F")
+  a = reemplazar(a, ":", "%3A")
+  a = reemplazar(a, "@", "%40")
+  a = reemplazar(a, "=", "%3D")
+  a = reemplazar(a, "&", "%26")
+  a = reemplazar(a, "\$", "%24")
+  a = reemplazar(a, "\!", "%21")
+  a = reemplazar(a, "\*", "%2A")
+  a = reemplazar(a, "\%", "%25")
+  a = reemplazar(a, '"', '%22')
+  a = reemplazar(a, ",", "%2C")
+  final = a
+  retorno final
+fin
+
+/*
+funcion db_conectar(conexion, puerto)
+	res = peticion(http.conexion.puerto)
+	retorno res
+fin
+*/
+
+funcion db_asignar(llave, valor)
+	url = peticion(def.tipo->asignar.llave."/".codificar(valor))
+	res = json_decodificar(url)
+fin
+
+funcion db_obtener(llave, valor)
+	url = peticion(def.tipo->obtener.llave)
+	res = json_decodificar(url)
+	si ! res->GET
+		retorno ""
+	sino
+		retorno res->GET
+	fin
+fin
+
+//funcion db_ping()
+	
+
+db_asignar("hola", "amigo latiñno")
+a = db_obtener("hola")
+imprimir(a)
